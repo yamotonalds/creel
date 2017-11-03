@@ -1,0 +1,11 @@
+# 魚籠 (creel)
+
+撮ったイカ動画を入れる
+
+## 必須環境変数
+
+- AWS_ACCESS_KEY_ID
+- AWS_SECRET_ACCESS_KEY
+- AWS_DEFAULT_REGION
+- INPUT_BUCKET
+- OUTPUT_BUCKET
