@@ -7,6 +7,17 @@ console.log('Loading function');
 exports.handler = (event, context, callback) => {
     // Log the received event
     console.log('Received event: ', event);
+
+    // s3fsは先に空ファイルを作ってから更新するので。
+    if (event.Records[0].s3.object.size <= 0) {
+        const message = 'Input file is empty';
+        console.error(message);
+        callback(message);
+        return;
+    }
+
+    const buckatname = event.Records[0].s3.bucket.name;
+    const filename = decodeURIComponent(event.Records[0].s3.object.key.replace(/\+/g, ' '));
     // Get parameters for the SubmitJob call from event
     // http://docs.aws.amazon.com/batch/latest/APIReference/API_SubmitJob.html
     const params = {
@@ -14,7 +25,7 @@ exports.handler = (event, context, callback) => {
         jobName: 'creel',
         jobQueue: 'creel',
         containerOverrides: null,
-        parameters: { 'input_file': event.Records[0].s3.bucket.name + '/' + event.Records[0].s3.object.key },
+        parameters: { 'input_file': buckatname + '/' + filename },
     };
     // Submit the Batch Job
     new AWS.Batch().submitJob(params, (err, data) => {

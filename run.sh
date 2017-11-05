@@ -12,4 +12,4 @@ echo "[`date '+%Y-%m-%d %H:%M:%S'`] start encoding"
 ffmpeg -stats -i "$FILE_NAME" -c:v libx264 -preset slow -crf 22 -c:a aac _output.mp4
 
 echo "[`date '+%Y-%m-%d %H:%M:%S'`] upload input file into $OUTPUT_BUCKET"
-aws s3 cp _output.mp4 s3://$OUTPUT_BUCKET/${FILE_NAME_WITHOUT_EXT}.mp4
+aws s3 cp _output.mp4 "s3://$OUTPUT_BUCKET/${FILE_NAME_WITHOUT_EXT}.mp4"
